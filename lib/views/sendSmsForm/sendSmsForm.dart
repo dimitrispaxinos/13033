@@ -3,9 +3,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metakinisi/helper.dart';
+import 'package:metakinisi/shared/profileService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
+import 'package:sms/sms.dart';
 
 class SendSmsView extends StatefulWidget {
   SendSmsView({Key key, this.viewModel}) : super(key: key);
@@ -134,13 +136,27 @@ class SendSmsViewState extends State<SendSmsView> {
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
                 //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
-                onPressed: _showSnackBar)));
+                onPressed: _sendSms)));
     return sb;
   }
 
+void _sendSms(){
+  SmsSender sender = new SmsSender();
+  String address = "13033";
+  var profileService = new ProfileService();
+var profile = profileService.getProfile();
+
+  String message = widget.viewModel.movingCode.toString() + ' ' + profile.name
+   + ' ' +   profile.street
+   + ' ' +   profile.area;
+
+  sender.sendSms(new SmsMessage(address, message));
+  _showSnackBar();
+}
+
   void _showSnackBar() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text('Το SMS εστάλη επυτυχώς', style: Helper.getIntroTextStyle(),),
+      content: Text('Το SMS εστάλη επιτυχώς', style: Helper.getIntroTextStyle(),),
       duration: Duration(seconds: 3),
       backgroundColor: Helper.getStandardThemeColor(),
     ));
