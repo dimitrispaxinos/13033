@@ -44,24 +44,7 @@ class MyApp extends StatelessWidget {
             return new ProfileView(profile: new ProfileViewModel());
           }
           return new SendSmsView(viewModel: new SendSmsViewModel());
-
-          // if (state is AuthenticationAuthenticated) {
-          //   return new BlocProvider<LoggedInShellBloc>(
-          //     bloc: LoggedInShellBloc(),
-          //     child: RootPage(auth),
-          //   );
-          // }
-          // if (state is IntroViewPlaying) {
-          //   return new IntroView();
-          // }
-          // if (state is AuthenticationUnauthenticated) {
-          //   // For testing only
-          //   //return new IntroView();
-          //   return new LoginPage(userRepository: auth);
-          // }
-          // if (state is AuthenticationLoading) {
-          //   return new LoadingIndicator();
-          // }
+          
         },
       ),
     );

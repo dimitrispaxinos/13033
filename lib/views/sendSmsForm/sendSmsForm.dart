@@ -17,6 +17,7 @@ class SendSmsView extends StatefulWidget {
 
 class SendSmsViewState extends State<SendSmsView> {
   Bloc<SendsmsEvent, SendsmsState> _bloc;
+ final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -34,8 +35,11 @@ class SendSmsViewState extends State<SendSmsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.viewModel.movingCode == null ? 'Επιλέξτε το λόγο μετακίνησης' : '')),
+          title: Text(widget.viewModel.movingCode == null
+              ? 'Επιλέξτε το λόγο μετακίνησης'
+              : '')),
       body: new Container(
         child: BlocBuilder<SendsmsEvent, SendsmsState>(
           bloc: _bloc,
@@ -121,16 +125,25 @@ class SendSmsViewState extends State<SendSmsView> {
             width: double.infinity,
             height: 70.0,
             child: new RaisedButton(
-              elevation: 5.0,
-              // shape: new RoundedRectangleBorder(
-              //     borderRadius: new BorderRadius.circular(30.0)),
-              color: Helper.getStandardThemeColor(),
-              child: new Text('Αποστολή SMS για \n' + widget.viewModel.reasonText,
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(fontSize: 18.0, color: Colors.white)),
-              onPressed: () => null,
-            )));
+                elevation: 5.0,
+                // shape: new RoundedRectangleBorder(
+                //     borderRadius: new BorderRadius.circular(30.0)),
+                color: Helper.getStandardThemeColor(),
+                child: new Text(
+                    'Αποστολή SMS για \n' + widget.viewModel.reasonText,
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 18.0, color: Colors.white)),
+                //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
+                onPressed: _showSnackBar)));
     return sb;
+  }
+
+  void _showSnackBar() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Το SMS εστάλη επυτυχώς', style: Helper.getIntroTextStyle(),),
+      duration: Duration(seconds: 3),
+      backgroundColor: Helper.getStandardThemeColor(),
+    ));
   }
 
   Widget _createBackButton() {
@@ -152,21 +165,4 @@ class SendSmsViewState extends State<SendSmsView> {
             )));
     return sb;
   }
-
-  // String _getReason(int reasonCode) {
-  //   if (reasonCode == 1) {
-  //     return '';
-  //   } else if (reasonCode == 2) {
-  //     return '';
-  //   } else if (reasonCode == 3) {
-  //     return '';
-  //   } else if (reasonCode == 4) {
-  //     return '';
-  //   } else if (reasonCode == 5) {
-  //     return '';
-  //   } else if (reasonCode == 6) {
-  //     return '';
-  //   } else
-  //     return null;
-  // }
 }

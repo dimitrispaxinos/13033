@@ -18,14 +18,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     MainEvent event,
   ) async* {
     await SharedPreferencesProvider.loadAndGetPrefs();
-  // profileService.deleteProfile();
+    //profileService.deleteProfile();
 
     var profile = profileService.getProfile();
 
     if (profile == null) {
       yield ProfileDoesNotExistState();
+    } else {
+      yield ProfileExistsState();
     }
-
-    // TODO: implement mapEventToState
   }
 }

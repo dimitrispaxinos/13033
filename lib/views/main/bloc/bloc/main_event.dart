@@ -9,3 +9,8 @@ class AppStarted extends MainEvent {
 }
 
 
+
+class ProfileCreated extends MainEvent {
+  @override
+  String toString() => 'AppStarted';
+}

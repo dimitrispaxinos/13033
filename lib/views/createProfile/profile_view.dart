@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metakinisi/helper.dart';
 
 import 'package:metakinisi/viewModels/profileViewModel.dart';
+import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
 
 import 'bloc/bloc/create_profile_bloc.dart';
 
@@ -38,7 +39,7 @@ class ProfileViewState extends State<ProfileView> {
   void initState() {
     super.initState();
 
-    _bloc = new EditProfileBloc();   
+    _bloc = new EditProfileBloc();
 
     // Add listener for events
     _bloc.state.listen((state) => _actUponEvents(state, context));
@@ -49,7 +50,8 @@ class ProfileViewState extends State<ProfileView> {
 
   void _actUponEvents(EditProfileState state, BuildContext context) {
     if (state is ProfileSaved) {
-      Navigator.pop(context);
+      BlocProvider.of<MainBloc>(context).dispatch(ProfileCreated());
+      //Navigator.pop(context);
     }
 
     if (state is ProfileViewLoaded) {
@@ -62,7 +64,7 @@ class ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Προωπικά Στοιχεία')),
+      appBar: AppBar(title: Text('Προσωπικά Στοιχεία')),
       body: new Container(
         child: BlocBuilder<EditProfileEvent, EditProfileState>(
           bloc: _bloc,
@@ -92,7 +94,7 @@ class ProfileViewState extends State<ProfileView> {
         child: Column(
           children: <Widget>[
             new Text(
-              "Εισαγωγή Στοιχείων",
+              "Εισάγετε και αποθηκεύστε τα στοιχεία σας",
             ),
             _createTextFormField(
                 'name',
@@ -108,7 +110,7 @@ class ProfileViewState extends State<ProfileView> {
 
             _createTextFormField(
                 'street',
-                'Οδός & Διεύθυνση',
+                'Οδός & Αριθμός',
                 _streetController,
                 TextInputType.text,
                 false,
@@ -154,7 +156,6 @@ class ProfileViewState extends State<ProfileView> {
 
   void _saveForm() {
     if (_formKey.currentState.validate()) {
-     
       widget.profile.name = _nameController.text;
       widget.profile.street = _streetController.text;
       widget.profile.area = _areaController.text;
@@ -233,14 +234,6 @@ class ProfileViewState extends State<ProfileView> {
             }
           },
         ));
-
-    // var showCase = Helper.buildShowCase(
-    //     context,
-    //     key,
-    //     'editAlert.textFields.$fieldName.showCase.title',
-    //     'editAlert.textFields.$fieldName.showCase.text',
-    //     formField);
-
     return formField;
   }
 

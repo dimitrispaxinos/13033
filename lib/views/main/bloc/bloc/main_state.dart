@@ -6,5 +6,5 @@ abstract class MainState {}
 class MainInitial extends MainState {}
 
 
-class ProfileDoesNotExistState extends MainState {  
-}
+class ProfileDoesNotExistState extends MainState {  }
+class ProfileExistsState extends MainState {  }
