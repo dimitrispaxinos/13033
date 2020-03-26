@@ -7,7 +7,7 @@ import 'package:metakinisi/shared/profileService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
-import 'package:sms/sms.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class SendSmsView extends StatefulWidget {
   SendSmsView({Key key, this.viewModel}) : super(key: key);
@@ -19,7 +19,7 @@ class SendSmsView extends StatefulWidget {
 
 class SendSmsViewState extends State<SendSmsView> {
   Bloc<SendsmsEvent, SendsmsState> _bloc;
- final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -27,11 +27,6 @@ class SendSmsViewState extends State<SendSmsView> {
 
     _bloc = new SendsmsBloc();
 
-    // Add listener for events
-    // _bloc.state.listen((state) => _actUponEvents(state, context));
-
-    // Dispatch initial event for loading alert
-    //_bloc.dispatch(new LoadProfileEvent());
   }
 
   @override
@@ -140,23 +135,41 @@ class SendSmsViewState extends State<SendSmsView> {
     return sb;
   }
 
-void _sendSms(){
-  SmsSender sender = new SmsSender();
-  String address = "13033";
-  var profileService = new ProfileService();
-var profile = profileService.getProfile();
+  void _sendSms() async {
+//   SmsSender sender = new SmsSender();
+//   String address = "13033";
+    var profileService = new ProfileService();
+    var profile = profileService.getProfile();
 
-  String message = widget.viewModel.movingCode.toString() + ' ' + profile.name
-   + ' ' +   profile.street
-   + ' ' +   profile.area;
+    String message = widget.viewModel.movingCode.toString() +
+        ' ' +
+        profile.name +
+        ' ' +
+        profile.street +
+        ' ' +
+        profile.area;
 
-  sender.sendSms(new SmsMessage(address, message));
-  _showSnackBar();
-}
+//   sender.sendSms(new SmsMessage(address, message));
+
+    var recipients = new List<String>();
+    recipients.add('13033');
+
+    try {
+      String _result = await sendSMS(message: message, recipients: recipients);
+      setState(() => message = _result);
+    } catch (error) {
+      setState(() => message = error.toString());
+    }
+
+    _showSnackBar();
+  }
 
   void _showSnackBar() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text('Το SMS εστάλη επιτυχώς', style: Helper.getIntroTextStyle(),),
+      content: Text(
+        'Το SMS εστάλη επιτυχώς',
+        style: Helper.getIntroTextStyle(),
+      ),
       duration: Duration(seconds: 3),
       backgroundColor: Helper.getStandardThemeColor(),
     ));
@@ -181,4 +194,5 @@ var profile = profileService.getProfile();
             )));
     return sb;
   }
+
 }
