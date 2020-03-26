@@ -1,5 +1,7 @@
-import 'package:metakinisi/shared/SharedPreferencesProvider.dart';
+
+
 import 'package:metakinisi/viewModels/profileViewModel.dart';
+import 'package:metakinisi/shared/SharedPreferencesProvider.dart';
 
 class ProfileService {
   ProfileViewModel getProfile() {

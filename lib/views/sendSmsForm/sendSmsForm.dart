@@ -1,3 +1,4 @@
+import 'package:metakinisi/shared/amplitudeLogProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class SendSmsViewState extends State<SendSmsView> {
     super.initState();
 
     _bloc = new SendsmsBloc();
-
   }
 
   @override
@@ -161,7 +161,8 @@ class SendSmsViewState extends State<SendSmsView> {
       setState(() => message = error.toString());
     }
 
-    _showSnackBar();
+    AmplitudeLogProvider.logUserCreatedSms(widget.viewModel.movingCode);
+    // _showSnackBar();
   }
 
   void _showSnackBar() {
@@ -194,5 +195,4 @@ class SendSmsViewState extends State<SendSmsView> {
             )));
     return sb;
   }
-
 }

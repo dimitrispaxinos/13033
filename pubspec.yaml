@@ -1,4 +1,4 @@
-name: '13033'
+name: metakinisi
 description: An automated SMS creator for leaving your residence during Greece's lockdown because of COVID-19
 
 # The following defines the version and build number for your application.
@@ -28,6 +28,7 @@ dependencies:
   showcaseview: ^0.1.5
   shared_preferences: ^0.5.6
   flutter_sms: ^2.0.0+2
+  amplitude_flutter: ^1.2.1
 
   #sms_maintained: ^0.2.5
   #  sms: ^0.2.0

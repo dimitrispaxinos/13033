@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:metakinisi/shared/amplitudeLogProvider.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:metakinisi/shared/profileService.dart';
@@ -25,6 +26,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
   Stream<EditProfileState> _mapSaveProfileEventToState(
       SaveProfileEvent event) async* {
+    await AmplitudeLogProvider.logUserStoredAddress();
     await profileService.saveProfile(event.profile);
     yield new ProfileSaved();
   }
