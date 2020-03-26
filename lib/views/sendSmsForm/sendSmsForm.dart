@@ -40,16 +40,8 @@ class SendSmsViewState extends State<SendSmsView> {
       body: new Container(
         child: BlocBuilder<SendsmsEvent, SendsmsState>(
           bloc: _bloc,
-          builder: (BuildContext context, SendsmsState state) {
-            if (widget.viewModel.movingCode == null) {
-              return Form(
-                child: _createForm(),
-              );
-            } else {
-              return Form(
-                child: _createSendForm(),
-              );
-            }
+          builder: (BuildContext context, SendsmsState state) {            
+              return Form(child: widget.viewModel.movingCode == null ? _createForm() : _createSendForm());
           },
         ),
         padding: new EdgeInsets.all(20.0),
