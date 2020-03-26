@@ -127,7 +127,7 @@ class SendSmsViewState extends State<SendSmsView> {
                 //     borderRadius: new BorderRadius.circular(30.0)),
                 color: Helper.getStandardThemeColor(),
                 child: new Text(
-                    'Αποστολή SMS για \n' + widget.viewModel.reasonText,
+                    'Δημιουργία SMS για \n' + widget.viewModel.reasonText,
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
                 //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),

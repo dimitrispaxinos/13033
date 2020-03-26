@@ -94,7 +94,7 @@ class ProfileViewState extends State<ProfileView> {
         child: Column(
           children: <Widget>[
             new Text(
-              "Εισάγετε και αποθηκεύστε τα στοιχεία σας",
+              "Εισάγετε και αποθηκεύστε τα στοιχεία σας μία μόνο φορά.",
             ),
             _createTextFormField(
                 'name',
@@ -207,14 +207,6 @@ class ProfileViewState extends State<ProfileView> {
               labelText: labelText,
               //hintText: hintText,
               fillColor: Colors.white,
-              // suffixIcon: new IconButton(
-              //   icon: Icon(Icons.help, color: Helper.getStandardThemeColor()),
-              //   onPressed: () {
-              //     ShowCaseWidget.of(_showCaseContext).startShowCase([
-              //       key,
-              //     ]);
-              //   },
-              // ),
               border: new OutlineInputBorder(
                 // borderRadius: new BorderRadius.circular(30.0),
                 borderSide: new BorderSide(),
