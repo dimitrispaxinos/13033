@@ -30,7 +30,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     if (profile == null) {
       yield ProfileDoesNotExistState();
     } else {
-      yield ProfileExistsState();
+      if (event is LoadCreatedProfile) {
+        yield LoadProfileState();
+      } else {
+        yield ProfileExistsState();
+      }
     }
   }
 }

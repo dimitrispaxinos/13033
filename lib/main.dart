@@ -39,12 +39,17 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<MainEvent, MainState>(
         bloc: BlocProvider.of<MainBloc>(context),
         builder: (BuildContext context, MainState state) {
-          //var service = new ProfileService();
-          if (state is ProfileDoesNotExistState) {
+          
+          if (state is ProfileDoesNotExistState || state is LoadProfileState) {
             return new ProfileView(profile: new ProfileViewModel());
           }
+
+          if (state is LoadProfileState) {
+            var service = new ProfileService();
+            return new ProfileView(profile: service.getProfile());
+          }
+
           return new SendSmsView(viewModel: new SendSmsViewModel());
-          
         },
       ),
     );

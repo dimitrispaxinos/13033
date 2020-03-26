@@ -7,4 +7,6 @@ class MainInitial extends MainState {}
 
 
 class ProfileDoesNotExistState extends MainState {  }
+
 class ProfileExistsState extends MainState {  }
+class LoadProfileState extends MainState {  }

@@ -7,6 +7,8 @@ import 'package:metakinisi/helper.dart';
 import 'package:metakinisi/shared/profileService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
+import 'package:metakinisi/views/createProfile/bloc/bloc/create_profile_bloc.dart';
+import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
@@ -31,22 +33,38 @@ class SendSmsViewState extends State<SendSmsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-          title: Text(widget.viewModel.movingCode == null
-              ? 'Επιλέξτε το λόγο μετακίνησης'
-              : '')),
-      body: new Container(
+    return Container(
         child: BlocBuilder<SendsmsEvent, SendsmsState>(
-          bloc: _bloc,
-          builder: (BuildContext context, SendsmsState state) {            
-              return Form(child: widget.viewModel.movingCode == null ? _createForm() : _createSendForm());
-          },
-        ),
-        padding: new EdgeInsets.all(20.0),
-      ),
-    );
+      bloc: _bloc,
+      builder: (BuildContext context, SendsmsState state) {
+        return Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.settings),
+                      disabledColor: Colors.grey,
+                      //enabled: widget.alert.id != null,
+                      onPressed: () {
+                        BlocProvider.of<MainBloc>(context).dispatch(LoadCreatedProfile());
+
+
+                        // (BlocProvider.of<EditProfileBloc>(context) ??
+                        //         new EditProfileBloc())
+                        //     .dispatch(LoadProfileEvent());
+                      })
+                ],
+                title: Text(widget.viewModel.movingCode == null
+                    ? 'Αιτιολογία μετακίνησης'
+                    : '')),
+            body: new Container(
+                padding: new EdgeInsets.all(20.0),
+                child: Form(
+                    child: widget.viewModel.movingCode == null
+                        ? _createForm()
+                        : _createSendForm())));
+      },
+    ));
   }
 
   void _addCodeToViewModel(int movingCode, String reasonText) {
