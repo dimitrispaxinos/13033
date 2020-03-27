@@ -46,8 +46,8 @@ class SendSmsViewState extends State<SendSmsView> {
                       disabledColor: Colors.grey,
                       //enabled: widget.alert.id != null,
                       onPressed: () {
-                        BlocProvider.of<MainBloc>(context).dispatch(LoadCreatedProfile());
-
+                        BlocProvider.of<MainBloc>(context)
+                            .dispatch(LoadCreatedProfile());
 
                         // (BlocProvider.of<EditProfileBloc>(context) ??
                         //         new EditProfileBloc())
@@ -59,10 +59,9 @@ class SendSmsViewState extends State<SendSmsView> {
                     : '')),
             body: new Container(
                 padding: new EdgeInsets.all(20.0),
-                child: Form(
-                    child: widget.viewModel.movingCode == null
-                        ? _createForm()
-                        : _createSendForm())));
+                child: widget.viewModel.movingCode == null
+                    ? _createForm()
+                    : _createSendForm()));
       },
     ));
   }
@@ -75,7 +74,7 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createForm() {
-    Column col = new Column(
+    ListView col = new ListView(
       children: <Widget>[
         // new Text('Επιλέξτε τον λόγο μετακίνησης'),
         _createButton(1, 'Φαρμακείο ή επίσκεψη σε γιατρό'),
@@ -97,8 +96,12 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createSendForm() {
-    Column col = new Column(
-      children: <Widget>[_createSendButton(), _createBackButton()],
+    ListView col = new ListView(
+      children: <Widget>[
+        _createSendButton(),
+        _createBackButton(),
+        _createFooter()
+      ],
     );
 
     var form = Form(child: col);
@@ -204,5 +207,29 @@ class SendSmsViewState extends State<SendSmsView> {
                   _bloc.dispatch(new RemoveMovingCodeEvent(widget.viewModel)),
             )));
     return sb;
+  }
+
+  Widget _createFooter() {
+    var text = new Text(
+      'Developed by Dimitris Paxinos',
+      style: new TextStyle(color: Colors.grey),
+      textAlign: TextAlign.center,
+    );
+
+    var gd = GestureDetector(
+        child: Text("Contact me",
+            style: TextStyle(
+                decoration: TextDecoration.underline, color: Colors.blue)),
+        onTap: () {
+          // do what you need to do when "Click here" gets clicked
+        });
+
+    var cont = new Container(
+        child: new Column(
+          children: <Widget>[text, gd],
+        ),
+        margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
+
+    return cont;
   }
 }
