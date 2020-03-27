@@ -95,7 +95,7 @@ class ProfileViewState extends State<ProfileView> {
           children: <Widget>[
             new Container(padding: EdgeInsets.fromLTRB(15,5,15,15),child: 
             new Text(
-              "Συμπλήρωσε τα στοιχεία σου για το SMS προς το 1303 και δεν θα χρειαστεί να τα συμπληρώσεις ξανά για μελλοντικές αποστολές!",
+              "Συμπλήρωσε τα στοιχεία σου για το SMS προς το 13033. Τα στοιχεία σου αποθηκεύονται τοπικά για μελλοντικές αποστολές.",
             )),
             _createTextFormField(
                 'name',

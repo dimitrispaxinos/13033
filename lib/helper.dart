@@ -2,24 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:showcaseview/showcase.dart';
 
 class Helper {
   static BuildContext _currentContext;
-
-  // static Future<String> getCurrentUserEmail() async {
-  //   var user = await getCurrentUser();
-  //   return user.email;
-  // }
-
-
-  // static String formatDateTime(DateTime date) {
-  //   if (date == null) return "";
-
-  //   var formatter = new DateFormat('dd/MM/yyyy kk:mm a');
-  //   String formattedTime = formatter.format(date);
-  //   return formattedTime;
-  // }
 
   static Color getStandardThemeColor() {
     return Color.fromRGBO(25, 94, 230, 1);
@@ -49,47 +34,6 @@ class Helper {
         fontSize: fontSize);
   }
 
-  // static Showcase buildShowCase(
-  //     BuildContext context,
-  //     GlobalKey showCaseKey,
-  //     String titleTranslationTag,
-  //     String descriptionTranslationTag,
-  //     Widget child) {
-  //   return _buildShowCaseBase(context, showCaseKey, titleTranslationTag,
-  //       descriptionTranslationTag, null, child);
-  // }
-
-  // static Showcase buildCircularShowCase(
-  //     BuildContext context,
-  //     GlobalKey showCaseKey,
-  //     String titleTranslationTag,
-  //     String descriptionTranslationTag,
-  //     Widget child) {
-  //   return _buildShowCaseBase(context, showCaseKey, titleTranslationTag,
-  //       descriptionTranslationTag, CircleBorder(), child);
-  // }
-
-  // static Showcase _buildShowCaseBase(
-  //     BuildContext context,
-  //     GlobalKey showCaseKey,
-  //     String titleTranslationTag,
-  //     String descriptionTranslationTag,
-  //     ShapeBorder shapeBorder,
-  //     Widget child) {
-  //   var showCase = Showcase(
-  //       key: showCaseKey,
-  //       title: _translate(titleTranslationTag, context),
-  //       description: _translate(descriptionTranslationTag, context),
-  //       showcaseBackgroundColor: Helper.getStandardThemeColor(),
-  //       shapeBorder: shapeBorder,
-  //       disableAnimation: true,
-  //       //animationDuration: Duration(milliseconds: 0),
-  //       descTextStyle: new TextStyle(fontSize: 13, color: Colors.white),
-  //       titleTextStyle: new TextStyle(
-  //           fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-  //       child: child);
-  //   return showCase;
-  // }
 
   static TextStyle getIntroTextStyle() {
     return TextStyle(fontSize: 20, color: Colors.white, height: 1.7);
