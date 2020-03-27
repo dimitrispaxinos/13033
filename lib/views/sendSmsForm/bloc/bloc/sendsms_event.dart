@@ -16,3 +16,6 @@ class RemoveMovingCodeEvent extends SendsmsEvent {
   RemoveMovingCodeEvent(SendSmsViewModel viewModel) : super(viewModel);
 }
 
+class OpenEmailEvent extends SendsmsEvent {
+  OpenEmailEvent(SendSmsViewModel viewModel) : super(viewModel);
+}

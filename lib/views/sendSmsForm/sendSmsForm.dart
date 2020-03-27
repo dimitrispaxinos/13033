@@ -7,7 +7,6 @@ import 'package:metakinisi/helper.dart';
 import 'package:metakinisi/shared/profileService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
-import 'package:metakinisi/views/createProfile/bloc/bloc/create_profile_bloc.dart';
 import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
 import 'package:flutter_sms/flutter_sms.dart';
@@ -40,25 +39,22 @@ class SendSmsViewState extends State<SendSmsView> {
         return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-                actions: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.settings),
-                      disabledColor: Colors.grey,
-                      //enabled: widget.alert.id != null,
-                      onPressed: () {
-                        BlocProvider.of<MainBloc>(context)
-                            .dispatch(LoadCreatedProfile());
-
-                        // (BlocProvider.of<EditProfileBloc>(context) ??
-                        //         new EditProfileBloc())
-                        //     .dispatch(LoadProfileEvent());
-                      })
-                ],
+                backgroundColor: Helper.getStandardThemeColor(),
+                // actions: <Widget>[
+                //   IconButton(
+                //       icon: Icon(Icons.settings),
+                //       disabledColor: Colors.grey,
+                //       //enabled: widget.alert.id != null,
+                //       onPressed: () {
+                //         BlocProvider.of<MainBloc>(context)
+                //             .dispatch(LoadCreatedProfile());
+                //       })
+                // ],
                 title: Text(widget.viewModel.movingCode == null
-                    ? 'Αιτιολογία μετακίνησης'
+                    ? '1303: Αιτιολογία μετακίνησης'
                     : '')),
             body: new Container(
-                padding: new EdgeInsets.all(20.0),
+                padding: new EdgeInsets.all(10.0),
                 child: widget.viewModel.movingCode == null
                     ? _createForm()
                     : _createSendForm()));
@@ -77,16 +73,16 @@ class SendSmsViewState extends State<SendSmsView> {
     ListView col = new ListView(
       children: <Widget>[
         // new Text('Επιλέξτε τον λόγο μετακίνησης'),
-        _createButton(1, 'Φαρμακείο ή επίσκεψη σε γιατρό'),
-        _createButton(
-            2, 'Προμήθεια αγαθών πρώτης ανάγκης (σούπερ/μίνι μάρκετ)'),
+        _createButton(1, 'Φαρμακείο ή Γιατρός'),
+        _createButton(2, 'Αγαθά πρώτης ανάγκης \n(σούπερ/μίνι μάρκετ)'),
         _createButton(3, 'Τράπεζα'),
         _createButton(
             4, 'Παροχή βοήθειας σε ανθρώπους που βρίσκονται σε ανάγκη'),
         _createButton(5, 'Μετάβαση σε τελετή \n (π.χ. κηδεία, γάμος, βάφτιση)'),
         _createButton(5, 'Μετάβαση διαζευγμένων γονέων'),
-        _createButton(6, 'Σωματική άσκηση σε \n εξωτερικό χώρο'),
+        _createButton(6, 'Σωματική άσκηση'),
         _createButton(6, 'Κίνηση με κατοικίδιο'),
+        _createEditPersonalDetailsButton()
       ],
     );
 
@@ -111,10 +107,10 @@ class SendSmsViewState extends State<SendSmsView> {
 
   Widget _createButton(int movingCode, String buttonText) {
     var sb = new Container(
-        padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+        padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
         child: SizedBox(
             width: double.infinity,
-            height: 60.0,
+            height: 50.0,
             child: new RaisedButton(
               elevation: 5.0,
               // shape: new RoundedRectangleBorder(
@@ -122,7 +118,7 @@ class SendSmsViewState extends State<SendSmsView> {
               color: Helper.getStandardThemeColor(),
               child: new Text(buttonText,
                   textAlign: TextAlign.center,
-                  style: new TextStyle(fontSize: 18.0, color: Colors.white)),
+                  style: new TextStyle(fontSize: 17.0, color: Colors.white)),
               onPressed: () => _addCodeToViewModel(movingCode, buttonText),
             )));
     return sb;
@@ -145,6 +141,26 @@ class SendSmsViewState extends State<SendSmsView> {
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
                 //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
                 onPressed: _sendSms)));
+    return sb;
+  }
+
+  Widget _createEditPersonalDetailsButton() {
+    var sb = new Container(
+        padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
+        child: SizedBox(
+            width: double.infinity,
+            height: 70.0,
+            child: new RaisedButton(
+                elevation: 5.0,
+                color: Colors.yellow,
+                child: new Text('Αλλαγή Προσωπικών Στοιχείων',
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                        fontSize: 18.0, color: Helper.getStandardThemeColor())),
+                onPressed: () {
+                  BlocProvider.of<MainBloc>(context)
+                      .dispatch(LoadCreatedProfile());
+                })));
     return sb;
   }
 
@@ -221,6 +237,7 @@ class SendSmsViewState extends State<SendSmsView> {
             style: TextStyle(
                 decoration: TextDecoration.underline, color: Colors.blue)),
         onTap: () {
+          _bloc.dispatch(new OpenEmailEvent(widget.viewModel));
           // do what you need to do when "Click here" gets clicked
         });
 
