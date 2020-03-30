@@ -40,18 +40,18 @@ class SendSmsViewState extends State<SendSmsView> {
             key: _scaffoldKey,
             appBar: AppBar(
                 backgroundColor: Helper.getStandardThemeColor(),
-                // actions: <Widget>[
-                //   IconButton(
-                //       icon: Icon(Icons.settings),
-                //       disabledColor: Colors.grey,
-                //       //enabled: widget.alert.id != null,
-                //       onPressed: () {
-                //         BlocProvider.of<MainBloc>(context)
-                //             .dispatch(LoadCreatedProfile());
-                //       })
-                // ],
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.share),
+                      disabledColor: Colors.grey,
+                      //enabled: widget.alert.id != null,
+                      onPressed: () {
+                        BlocProvider.of<MainBloc>(context)
+                            .dispatch(ShareApplication());
+                      })
+                ],
                 title: Text(widget.viewModel.movingCode == null
-                    ? '1303: Αιτιολογία μετακίνησης'
+                    ? '13003: Λόγος μετακίνησης'
                     : '')),
             body: new Container(
                 padding: new EdgeInsets.all(10.0),
@@ -77,11 +77,11 @@ class SendSmsViewState extends State<SendSmsView> {
         _createButton(2, 'Αγαθά πρώτης ανάγκης \n(σούπερ/μίνι μάρκετ)'),
         _createButton(3, 'Τράπεζα'),
         _createButton(
-            4, 'Παροχή βοήθειας σε ανθρώπους που βρίσκονται σε ανάγκη'),
+            4, 'Παροχή βοήθειας'),
         _createButton(5, 'Μετάβαση σε τελετή \n (π.χ. κηδεία, γάμος, βάφτιση)'),
         _createButton(5, 'Μετάβαση διαζευγμένων γονέων'),
         _createButton(6, 'Σωματική άσκηση'),
-        _createButton(6, 'Κίνηση με κατοικίδιο'),
+        _createButton(6, 'Βόλτα με κατοικίδιο'),
         _createEditPersonalDetailsButton()
       ],
     );

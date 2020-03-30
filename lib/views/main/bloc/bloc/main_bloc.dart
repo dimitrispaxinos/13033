@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_share/flutter_share.dart';
 import 'package:metakinisi/shared/amplitudeLogProvider.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -29,6 +30,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
     if (profile == null) {
       yield ProfileDoesNotExistState();
+    } else if (event is ShareApplication) {
+      await FlutterShare.share(
+          title: "13033",
+          text: 'SMS στο 13033 με 3 κλικ!',
+          linkUrl:
+              'https://play.google.com/store/apps/details?id=metakinisi.app');
     } else {
       if (event is LoadCreatedProfile) {
         yield LoadProfileState();
