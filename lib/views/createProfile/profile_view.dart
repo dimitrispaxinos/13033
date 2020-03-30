@@ -64,7 +64,7 @@ class ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Προσωπικά Στοιχεία')),
+      appBar: AppBar(title: Text('Προσωπικά Στοιχεία'), backgroundColor: Helper.getStandardThemeColor(),),
       body: new Container(
         child: BlocBuilder<EditProfileEvent, EditProfileState>(
           bloc: _bloc,
@@ -93,7 +93,7 @@ class ProfileViewState extends State<ProfileView> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            new Container(padding: EdgeInsets.fromLTRB(15,5,15,15),child: 
+            new Container(padding: EdgeInsets.fromLTRB(15,5,15,5),child: 
             new Text(
               "Συμπλήρωσε τα στοιχεία σου για το SMS προς το 13033. Τα στοιχεία σου αποθηκεύονται τοπικά για μελλοντικές αποστολές.",
             )),
