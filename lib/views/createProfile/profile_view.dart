@@ -181,10 +181,8 @@ class ProfileViewState extends State<ProfileView> {
     }
 
     // String labelText = _translate('editAlert.textFields.$fieldName.labelText');
-    String hintText =
-        null; // _translate('editAlert.textFields.$fieldName.hintText');
-    String validationMessage =
-        null; // _translate('editAlert.textFields.$fieldName.validationMessage');
+    String hintText = null; 
+    String validationMessage = 'Το πεδίο \'' + labelText +'\' είναι υποχρεωτικό';
 
     var formField = new Padding(
         padding: EdgeInsets.fromLTRB(15.0, 7.0, 15.0, 2.0),
