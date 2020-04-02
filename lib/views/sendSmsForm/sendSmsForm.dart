@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metakinisi/helper.dart';
 import 'package:metakinisi/shared/profileService.dart';
+import 'package:metakinisi/shared/ratingService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
 import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SendSmsView extends StatefulWidget {
   SendSmsView({Key key, this.viewModel}) : super(key: key);
@@ -97,7 +99,8 @@ class SendSmsViewState extends State<SendSmsView> {
         _createSendButton(),
         _createBackButton(),
         _createSentMessagesText(),
-        //_createFooter()
+        _createFooter(),
+        _createRatingFooter()
       ],
     );
 
@@ -142,8 +145,7 @@ class SendSmsViewState extends State<SendSmsView> {
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
                 //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
                 onPressed: () {
-                  BlocProvider.of<MainBloc>(context)
-                      .dispatch(LoadCreatedProfile());
+                  _bloc.dispatch(CreateSmsEvent(widget.viewModel));
                 })));
     return sb;
   }
@@ -162,7 +164,8 @@ class SendSmsViewState extends State<SendSmsView> {
                     style: new TextStyle(
                         fontSize: 18.0, color: Helper.getStandardThemeColor())),
                 onPressed: () {
-                  _bloc.dispatch(CreateSmsEvent(widget.viewModel));
+                  BlocProvider.of<MainBloc>(context)
+                      .dispatch(LoadCreatedProfile());
                 })));
     return sb;
   }
@@ -221,18 +224,54 @@ class SendSmsViewState extends State<SendSmsView> {
     var gd = GestureDetector(
         child: Text("Contact me",
             style: TextStyle(
-                decoration: TextDecoration.underline, color: Colors.blue)),
+                decoration: TextDecoration.underline,
+                color: Helper.getStandardThemeColor())),
         onTap: () {
           _bloc.dispatch(new OpenEmailEvent(widget.viewModel));
+
+          // do what you need to do when "Click here" gets clicked
+        });
+    var children = new List<Widget>();
+
+    children.add(text);
+
+    if (!(widget.viewModel.numberOfSentMessages > 3 &&
+        widget.viewModel.numberOfSentMessages < 8)) {
+      children.add(gd);
+    }
+
+    var cont = new Container(
+        child: new Column(
+          children: children,
+        ),
+        margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
+
+    return cont;
+  }
+
+  Widget _createRatingFooter() {
+    var gd = GestureDetector(
+        child: Text("Σου αρέσει η εφαρμογή?",
+            style: TextStyle(
+                fontSize: 16,
+                decoration: TextDecoration.none,
+                color: Helper.getStandardThemeColor())),
+        onTap: () {
+          var rs = new RatingService();
+          rs.showDialog2(context);
           // do what you need to do when "Click here" gets clicked
         });
 
     var cont = new Container(
         child: new Column(
-          children: <Widget>[text, gd],
+          children: <Widget>[gd],
         ),
         margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
 
-    return cont;
+    if (widget.viewModel.numberOfSentMessages > 3 &&
+        widget.viewModel.numberOfSentMessages < 8) {
+      return cont;
+    }
+    return new Container();
   }
 }
