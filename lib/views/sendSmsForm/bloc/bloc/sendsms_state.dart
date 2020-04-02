@@ -18,3 +18,4 @@ class MovingCodeAdded extends SendsmsState {
 class MovingCodeRemoved extends SendsmsState {
   MovingCodeRemoved(SendSmsViewModel viewModel) : super(viewModel);
 }
+

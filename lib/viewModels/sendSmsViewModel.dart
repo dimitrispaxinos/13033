@@ -1,11 +1,15 @@
 import 'package:metakinisi/viewModels/profileViewModel.dart';
 
-class SendSmsViewModel{
+class SendSmsViewModel {
   int movingCode;
   String reasonText;
   bool smsSend;
+  int numberOfSentMessages;
   ProfileViewModel profile;
-  SendSmsViewModel(){
+
+  SendSmsViewModel(int msgNumber){
+  //SendSmsViewModel() {
     smsSend = false;
+    numberOfSentMessages = msgNumber;
   }
 }

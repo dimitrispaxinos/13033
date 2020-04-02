@@ -23,7 +23,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   Stream<MainState> mapEventToState(
     MainEvent event,
   ) async* {
-    await SharedPreferencesProvider.loadAndGetPrefs();
+    //await SharedPreferencesProvider.loadAndGetPrefs();
     // profileService.deleteProfile();
 
     var profile = profileService.getProfile();

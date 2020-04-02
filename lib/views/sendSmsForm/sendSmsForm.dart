@@ -28,6 +28,7 @@ class SendSmsViewState extends State<SendSmsView> {
     super.initState();
 
     _bloc = new SendsmsBloc();
+    //_bloc.dispatch(new AddMovingCodeEvent())
   }
 
   @override
@@ -51,7 +52,7 @@ class SendSmsViewState extends State<SendSmsView> {
                       })
                 ],
                 title: Text(widget.viewModel.movingCode == null
-                    ? '13003: Λόγος μετακίνησης'
+                    ? '13033: Λόγος μετακίνησης'
                     : '')),
             body: new Container(
                 padding: new EdgeInsets.all(10.0),
@@ -72,17 +73,16 @@ class SendSmsViewState extends State<SendSmsView> {
   Widget _createForm() {
     ListView col = new ListView(
       children: <Widget>[
-        // new Text('Επιλέξτε τον λόγο μετακίνησης'),
         _createButton(1, 'Φαρμακείο ή Γιατρός'),
         _createButton(2, 'Αγαθά πρώτης ανάγκης \n(σούπερ/μίνι μάρκετ)'),
         _createButton(3, 'Τράπεζα'),
-        _createButton(
-            4, 'Παροχή βοήθειας'),
+        _createButton(4, 'Παροχή βοήθειας'),
         _createButton(5, 'Μετάβαση σε τελετή \n (π.χ. κηδεία, γάμος, βάφτιση)'),
         _createButton(5, 'Μετάβαση διαζευγμένων γονέων'),
         _createButton(6, 'Σωματική άσκηση'),
         _createButton(6, 'Βόλτα με κατοικίδιο'),
-        _createEditPersonalDetailsButton()
+        _createEditPersonalDetailsButton(),
+        _createSentMessagesText()
       ],
     );
 
@@ -96,7 +96,8 @@ class SendSmsViewState extends State<SendSmsView> {
       children: <Widget>[
         _createSendButton(),
         _createBackButton(),
-        _createFooter()
+        _createSentMessagesText(),
+        //_createFooter()
       ],
     );
 
@@ -140,7 +141,10 @@ class SendSmsViewState extends State<SendSmsView> {
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
                 //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
-                onPressed: _sendSms)));
+                onPressed: () {
+                  BlocProvider.of<MainBloc>(context)
+                      .dispatch(LoadCreatedProfile());
+                })));
     return sb;
   }
 
@@ -158,40 +162,22 @@ class SendSmsViewState extends State<SendSmsView> {
                     style: new TextStyle(
                         fontSize: 18.0, color: Helper.getStandardThemeColor())),
                 onPressed: () {
-                  BlocProvider.of<MainBloc>(context)
-                      .dispatch(LoadCreatedProfile());
+                  _bloc.dispatch(CreateSmsEvent(widget.viewModel));
                 })));
     return sb;
   }
 
-  void _sendSms() async {
-//   SmsSender sender = new SmsSender();
-//   String address = "13033";
-    var profileService = new ProfileService();
-    var profile = profileService.getProfile();
+  Widget _createSentMessagesText() {
+    var messagesNotification = widget.viewModel.numberOfSentMessages != 0
+        ? 'Σημέρα έχουν δημιουγηθεί ${widget.viewModel.numberOfSentMessages.toString()} μηνύματα.'
+        : '';
 
-    String message = widget.viewModel.movingCode.toString() +
-        ' ' +
-        profile.name +
-        ' ' +
-        profile.street +
-        ' ' +
-        profile.area;
-
-//   sender.sendSms(new SmsMessage(address, message));
-
-    var recipients = new List<String>();
-    recipients.add('13033');
-
-    try {
-      String _result = await sendSMS(message: message, recipients: recipients);
-      setState(() => message = _result);
-    } catch (error) {
-      setState(() => message = error.toString());
-    }
-
-    AmplitudeLogProvider.logUserCreatedSms(widget.viewModel.movingCode);
-    // _showSnackBar();
+    return new Text(messagesNotification,
+        textAlign: TextAlign.center,
+        style: new TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            color: Helper.getStandardThemeColor()));
   }
 
   void _showSnackBar() {

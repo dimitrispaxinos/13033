@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:metakinisi/root.dart';
+import 'package:metakinisi/shared/SharedPreferencesProvider.dart';
 import 'package:metakinisi/shared/profileService.dart';
 import 'package:metakinisi/viewModels/profileViewModel.dart';
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
@@ -14,7 +15,10 @@ import 'SimpleBlocDelegate.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
+SharedPreferencesProvider.loadAndGetPrefs()
+  .then((value) {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+     BlocSupervisor.delegate = SimpleBlocDelegate();
 
   Widget initialBloc = BlocProvider<MainBloc>(
     bloc: MainBloc()..dispatch(AppStarted()),
@@ -24,6 +28,7 @@ void main() {
   var appRoot = new AppRoot(child: initialBloc);
 
   runApp(appRoot);
+  }); 
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +44,6 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<MainEvent, MainState>(
         bloc: BlocProvider.of<MainBloc>(context),
         builder: (BuildContext context, MainState state) {
-          
           if (state is ProfileDoesNotExistState || state is LoadProfileState) {
             return new ProfileView(profile: new ProfileViewModel());
           }
@@ -48,8 +52,11 @@ class MyApp extends StatelessWidget {
             var service = new ProfileService();
             return new ProfileView(profile: service.getProfile());
           }
+          var profileService = new ProfileService();
+          var numberOfMessages = profileService.getMessagesNumberOfTheDay();
 
-          return new SendSmsView(viewModel: new SendSmsViewModel());
+          return new SendSmsView(
+              viewModel: new SendSmsViewModel(numberOfMessages));
         },
       ),
     );
