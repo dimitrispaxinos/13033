@@ -76,10 +76,10 @@ class SendSmsViewState extends State<SendSmsView> {
     ListView col = new ListView(
       children: <Widget>[
         _createButton(1, 'Φαρμακείο ή Γιατρός'),
-        _createButton(2, 'Αγαθά πρώτης ανάγκης \n(σούπερ/μίνι μάρκετ)'),
+        _createButton(2, 'Σούπερ μάρκετ)'),
         _createButton(3, 'Τράπεζα'),
         _createButton(4, 'Παροχή βοήθειας'),
-        _createButton(5, 'Μετάβαση σε τελετή \n (π.χ. κηδεία, γάμος, βάφτιση)'),
+        _createButton(5, 'Τελετή'),
         _createButton(5, 'Μετάβαση διαζευγμένων γονέων'),
         _createButton(6, 'Σωματική άσκηση'),
         _createButton(6, 'Βόλτα με κατοικίδιο'),
@@ -222,7 +222,7 @@ class SendSmsViewState extends State<SendSmsView> {
     );
 
     var gd = GestureDetector(
-        child: Text("Contact me",
+        child: Text("Επικοινωνία",
             style: TextStyle(
                 decoration: TextDecoration.underline,
                 color: Helper.getStandardThemeColor())),
@@ -235,7 +235,7 @@ class SendSmsViewState extends State<SendSmsView> {
 
     children.add(text);
 
-    if (!(widget.viewModel.numberOfSentMessages > 3 &&
+    if (!(widget.viewModel.numberOfSentMessages > 2 &&
         widget.viewModel.numberOfSentMessages < 8)) {
       children.add(gd);
     }
@@ -251,7 +251,7 @@ class SendSmsViewState extends State<SendSmsView> {
 
   Widget _createRatingFooter() {
     var gd = GestureDetector(
-        child: Text("Σου αρέσει η εφαρμογή?",
+        child: Text("Βαθμολογήστε μας",
             style: TextStyle(
                 fontSize: 16,
                 decoration: TextDecoration.none,
@@ -268,7 +268,7 @@ class SendSmsViewState extends State<SendSmsView> {
         ),
         margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
 
-    if (widget.viewModel.numberOfSentMessages > 3 &&
+    if (widget.viewModel.numberOfSentMessages > 2 &&
         widget.viewModel.numberOfSentMessages < 8) {
       return cont;
     }
