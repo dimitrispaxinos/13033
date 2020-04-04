@@ -15,20 +15,19 @@ import 'SimpleBlocDelegate.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-SharedPreferencesProvider.loadAndGetPrefs()
-  .then((value) {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-     BlocSupervisor.delegate = SimpleBlocDelegate();
+  SharedPreferencesProvider.loadAndGetPrefs().then((value) {
+    BlocSupervisor.delegate = SimpleBlocDelegate();
+    BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  Widget initialBloc = BlocProvider<MainBloc>(
-    bloc: MainBloc()..dispatch(AppStarted()),
-    child: MyApp(),
-  );
+    Widget initialBloc = BlocProvider<MainBloc>(
+      bloc: MainBloc()..dispatch(AppStarted()),
+      child: MyApp(),
+    );
 
-  var appRoot = new AppRoot(child: initialBloc);
+    var appRoot = new AppRoot(child: initialBloc);
 
-  runApp(appRoot);
-  }); 
+    runApp(appRoot);
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -53,10 +52,9 @@ class MyApp extends StatelessWidget {
             return new ProfileView(profile: service.getProfile());
           }
           var profileService = new ProfileService();
-          var numberOfMessages = profileService.getMessagesNumberOfTheDay();
+          var dailyStats = profileService.getStatisticsOfTheDay();
 
-          return new SendSmsView(
-              viewModel: new SendSmsViewModel(numberOfMessages));
+          return new SendSmsView(viewModel: new SendSmsViewModel(dailyStats));
         },
       ),
     );

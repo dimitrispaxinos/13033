@@ -1,16 +1,13 @@
-import 'package:metakinisi/shared/amplitudeLogProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metakinisi/helper.dart';
-import 'package:metakinisi/shared/profileService.dart';
 import 'package:metakinisi/shared/ratingService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
 import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
 import 'package:metakinisi/views/sendSmsForm/bloc/bloc/sendsms_bloc.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendSmsView extends StatefulWidget {
@@ -30,7 +27,6 @@ class SendSmsViewState extends State<SendSmsView> {
     super.initState();
 
     _bloc = new SendsmsBloc();
-    //_bloc.dispatch(new AddMovingCodeEvent())
   }
 
   @override
@@ -40,6 +36,10 @@ class SendSmsViewState extends State<SendSmsView> {
       bloc: _bloc,
       builder: (BuildContext context, SendsmsState state) {
         return Scaffold(
+            bottomNavigationBar: BottomAppBar(
+                child: new Container(
+                    padding: new EdgeInsets.all(20.0),
+                    child: _createSentMessagesText())),
             key: _scaffoldKey,
             appBar: AppBar(
                 backgroundColor: Helper.getStandardThemeColor(),
@@ -75,16 +75,13 @@ class SendSmsViewState extends State<SendSmsView> {
   Widget _createForm() {
     ListView col = new ListView(
       children: <Widget>[
-        _createButton(1, 'Φαρμακείο ή Γιατρός'),
-        _createButton(2, 'Σούπερ μάρκετ)'),
+        _createButton(1, 'Φαρμακείο / Γιατρός'),
+        _createButton(2, 'Σούπερ μάρκετ'),
         _createButton(3, 'Τράπεζα'),
         _createButton(4, 'Παροχή βοήθειας'),
-        _createButton(5, 'Τελετή'),
-        _createButton(5, 'Μετάβαση διαζευγμένων γονέων'),
-        _createButton(6, 'Σωματική άσκηση'),
-        _createButton(6, 'Βόλτα με κατοικίδιο'),
+        _createButton(5, 'Τελετή / Διαζευγμένοι Γονείς'),
+        _createButton(6, 'Άσκηση / Βόλτα με κατοικίδιο'),
         _createEditPersonalDetailsButton(),
-        _createSentMessagesText()
       ],
     );
 
@@ -98,9 +95,8 @@ class SendSmsViewState extends State<SendSmsView> {
       children: <Widget>[
         _createSendButton(),
         _createBackButton(),
-        _createSentMessagesText(),
+        _createRatingFooter(),
         _createFooter(),
-        _createRatingFooter()
       ],
     );
 
@@ -171,9 +167,12 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createSentMessagesText() {
-    var messagesNotification = widget.viewModel.numberOfSentMessages != 0
-        ? 'Σημέρα έχουν δημιουγηθεί ${widget.viewModel.numberOfSentMessages.toString()} μηνύματα.'
-        : '';
+    var totalDailySms = widget.viewModel.smsStatistics.getTotalSmsOfTheDay();
+
+    var messagesNotification =
+        (totalDailySms != 0 && widget.viewModel.movingCode == null)
+            ? 'Σημέρα έχουν δημιουγηθεί ${totalDailySms.toString()} μηνύματα.'
+            : '';
 
     return new Text(messagesNotification,
         textAlign: TextAlign.center,
@@ -181,17 +180,6 @@ class SendSmsViewState extends State<SendSmsView> {
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
             color: Helper.getStandardThemeColor()));
-  }
-
-  void _showSnackBar() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(
-        'Το SMS εστάλη επιτυχώς',
-        style: Helper.getIntroTextStyle(),
-      ),
-      duration: Duration(seconds: 3),
-      backgroundColor: Helper.getStandardThemeColor(),
-    ));
   }
 
   Widget _createBackButton() {
@@ -223,9 +211,9 @@ class SendSmsViewState extends State<SendSmsView> {
 
     var gd = GestureDetector(
         child: Text("Επικοινωνία",
-            style: TextStyle(
-                decoration: TextDecoration.underline,
-                color: Helper.getStandardThemeColor())),
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 18, color: Helper.getStandardThemeColor())),
         onTap: () {
           _bloc.dispatch(new OpenEmailEvent(widget.viewModel));
 
@@ -234,11 +222,7 @@ class SendSmsViewState extends State<SendSmsView> {
     var children = new List<Widget>();
 
     children.add(text);
-
-    if (!(widget.viewModel.numberOfSentMessages > 2 &&
-        widget.viewModel.numberOfSentMessages < 8)) {
-      children.add(gd);
-    }
+    children.add(gd);
 
     var cont = new Container(
         child: new Column(
@@ -253,12 +237,17 @@ class SendSmsViewState extends State<SendSmsView> {
     var gd = GestureDetector(
         child: Text("Βαθμολογήστε μας",
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 decoration: TextDecoration.none,
                 color: Helper.getStandardThemeColor())),
         onTap: () {
-          var rs = new RatingService();
-          rs.showDialog2(context);
+          var marketurl =
+              'https://play.google.com/store/apps/details?id=metakinisi.app';
+
+          launch(marketurl);
+
+          // var rs = new RatingService();
+          // rs.showDialog2(context);
           // do what you need to do when "Click here" gets clicked
         });
 
@@ -268,10 +257,12 @@ class SendSmsViewState extends State<SendSmsView> {
         ),
         margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
 
-    if (widget.viewModel.numberOfSentMessages > 2 &&
-        widget.viewModel.numberOfSentMessages < 8) {
+    var totalDailySms = widget.viewModel.smsStatistics.getTotalSmsOfTheDay();
+
+    if (totalDailySms > 1 && totalDailySms < 8) {
       return cont;
     }
+
     return new Container();
   }
 }

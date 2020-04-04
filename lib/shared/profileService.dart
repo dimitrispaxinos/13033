@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:metakinisi/shared/categoryStatistics.dart';
+import 'package:metakinisi/shared/smsStatistics.dart';
 import 'package:metakinisi/viewModels/profileViewModel.dart';
 import 'package:metakinisi/shared/SharedPreferencesProvider.dart';
 
@@ -7,7 +12,7 @@ class ProfileService {
   static String profileStreet = "profileStreet";
   static String profileArea = "profileArea";
   static String totalNumberOfMessages = "profileArea";
-//static String profileName = "profileName";
+  static String statisticsKey = "statistics";
 
   ProfileViewModel getProfile() {
     var profileName = SharedPreferencesProvider.get('profileName');
@@ -32,14 +37,41 @@ class ProfileService {
     await SharedPreferencesProvider.remove('profileArea');
   }
 
+  SmsStatistics getStatisticsOfTheDay() {
+    return getStatistics(getTodayDateString());
+  }
+
+  SmsStatistics getStatistics(String date) {
+    date = getTodayDateString();
+
+    var statsString = SharedPreferencesProvider.get(statisticsKey + date);
+    if (statsString == null) {
+      var newStats = new SmsStatistics(date, new List<CategoryStatistics>());
+      newStats.addStatistics();
+      return newStats;
+    }
+
+    var map = jsonDecode(statsString);
+    var stats = SmsStatistics.fromJson(map);
+    return stats;
+  }
+
+  Future saveStatistics(SmsStatistics stats) async {
+    //JsonConverter<>.
+    var statsJson = stats.toJson(); //.toString();
+    var statsString = jsonEncode(statsJson);
+    await SharedPreferencesProvider.saveString(
+        statisticsKey + stats.date, statsString);
+  }
+
   // Increases daily and overall counter as well
-  Future increaseSmsCounter() async {
-    await _increaseDailySms();
+  Future increaseSmsCounter(int category) async {
+    await _increaseDailySms(category);
     await _increaseTotalNumberOfSms();
   }
 
   int getMessagesNumberOfTheDay() {
-    var key = _getTodayDateString();
+    var key = getTodayDateString();
     return _parseStoredIntNumber(key);
   }
 
@@ -47,11 +79,14 @@ class ProfileService {
     return _parseStoredIntNumber(totalNumberOfMessages);
   }
 
-  Future _increaseDailySms() async {
-    var key = _getTodayDateString();
-    var alreadySentMessages = getMessagesNumberOfTheDay();
-    await SharedPreferencesProvider.saveString(
-        key, (alreadySentMessages + 1).toString());
+  Future _increaseDailySms(int category) async {
+    var stats = getStatisticsOfTheDay();
+    stats = stats ?? new SmsStatistics(getTodayDateString(), null);
+
+    stats.allCategoryStatistics[category - 1].numberOfMessages =
+        stats.allCategoryStatistics[category - 1].numberOfMessages + 1;
+
+    await saveStatistics(stats);
   }
 
   Future _increaseTotalNumberOfSms() async {
@@ -72,7 +107,7 @@ class ProfileService {
     return 0;
   }
 
-  String _getTodayDateString() {
+  String getTodayDateString() {
     var now = new DateTime.now();
     //var formatter = new DateFormat('yyyy-MM-dd');
     var formatter = new DateFormat('yyyyMMdd');
