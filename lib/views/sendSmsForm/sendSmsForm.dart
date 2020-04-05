@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metakinisi/helper.dart';
-import 'package:metakinisi/shared/ratingService.dart';
+import 'package:metakinisi/shared/profileService.dart';
 
 import 'package:metakinisi/viewModels/sendSmsViewModel.dart';
 import 'package:metakinisi/views/main/bloc/bloc/main_bloc.dart';
@@ -31,19 +32,34 @@ class SendSmsViewState extends State<SendSmsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    var ps = new ProfileService();
+    var totalNumberOfMessage = ps.getTotalMessagesNumber();
+
+    var cont = Container(
         child: BlocBuilder<SendsmsEvent, SendsmsState>(
       bloc: _bloc,
       builder: (BuildContext context, SendsmsState state) {
         return Scaffold(
             bottomNavigationBar: BottomAppBar(
                 child: new Container(
-                    padding: new EdgeInsets.all(20.0),
-                    child: _createSentMessagesText())),
+                    padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
+                    child: _createFooter())),
             key: _scaffoldKey,
             appBar: AppBar(
                 backgroundColor: Helper.getStandardThemeColor(),
                 actions: <Widget>[
+                  IconButton(
+                      color: totalNumberOfMessage >= 4
+                          ? Colors.white
+                          : Colors.transparent,
+                      icon: Icon(Icons.star),
+                      disabledColor: Colors.grey,
+                      onPressed: () {
+                        var marketurl =
+                            'https://play.google.com/store/apps/details?id=metakinisi.app';
+
+                        launch(marketurl);
+                      }),
                   IconButton(
                       icon: Icon(Icons.share),
                       disabledColor: Colors.grey,
@@ -51,10 +67,10 @@ class SendSmsViewState extends State<SendSmsView> {
                       onPressed: () {
                         BlocProvider.of<MainBloc>(context)
                             .dispatch(ShareApplication());
-                      })
+                      }),
                 ],
                 title: Text(widget.viewModel.movingCode == null
-                    ? '13033: Λόγος μετακίνησης'
+                    ? 'Λόγος μετακίνησης'
                     : '')),
             body: new Container(
                 padding: new EdgeInsets.all(10.0),
@@ -63,6 +79,17 @@ class SendSmsViewState extends State<SendSmsView> {
                     : _createSendForm()));
       },
     ));
+//return cont;
+    return WillPopScope(
+        onWillPop: () {
+          if (widget.viewModel.movingCode != null) {
+            _bloc.dispatch(new RemoveMovingCodeEvent(widget.viewModel));
+          } else {
+            SystemNavigator.pop();
+            //Navigator.of(context).pop();
+          }
+        },
+        child: cont);
   }
 
   void _addCodeToViewModel(int movingCode, String reasonText) {
@@ -75,10 +102,13 @@ class SendSmsViewState extends State<SendSmsView> {
   Widget _createForm() {
     ListView col = new ListView(
       children: <Widget>[
+        new Container(
+          padding: EdgeInsets.fromLTRB(0, 12.0, 0, 0),
+        ),
         _createButton(1, 'Φαρμακείο / Γιατρός'),
-        _createButton(2, 'Σούπερ μάρκετ'),
+        _createButton(2, 'Σούπερ Μάρκετ'),
         _createButton(3, 'Τράπεζα'),
-        _createButton(4, 'Παροχή βοήθειας'),
+        _createButton(4, 'Παροχή Βοήθειας'),
         _createButton(5, 'Τελετή / Διαζευγμένοι Γονείς'),
         _createButton(6, 'Άσκηση / Βόλτα με κατοικίδιο'),
         _createEditPersonalDetailsButton(),
@@ -93,10 +123,12 @@ class SendSmsViewState extends State<SendSmsView> {
   Widget _createSendForm() {
     ListView col = new ListView(
       children: <Widget>[
+        new Container(
+          padding: EdgeInsets.fromLTRB(0, 12.0, 0, 0),
+        ),
         _createSendButton(),
         _createBackButton(),
-        _createRatingFooter(),
-        _createFooter(),
+        _createRatingControl(),
       ],
     );
 
@@ -132,14 +164,11 @@ class SendSmsViewState extends State<SendSmsView> {
             height: 70.0,
             child: new RaisedButton(
                 elevation: 5.0,
-                // shape: new RoundedRectangleBorder(
-                //     borderRadius: new BorderRadius.circular(30.0)),
                 color: Helper.getStandardThemeColor(),
                 child: new Text(
                     'Δημιουργία SMS για \n' + widget.viewModel.reasonText,
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 18.0, color: Colors.white)),
-                //onPressed: () => Scaffold.of(context).showSnackBar(snackBar)),
                 onPressed: () {
                   _bloc.dispatch(CreateSmsEvent(widget.viewModel));
                 })));
@@ -171,7 +200,7 @@ class SendSmsViewState extends State<SendSmsView> {
 
     var messagesNotification =
         (totalDailySms != 0 && widget.viewModel.movingCode == null)
-            ? 'Σημέρα έχουν δημιουγηθεί ${totalDailySms.toString()} μηνύματα.'
+            ? 'Συνολικά Σημερινά Μηνύματα: ${totalDailySms.toString()}'
             : '';
 
     return new Text(messagesNotification,
@@ -187,11 +216,9 @@ class SendSmsViewState extends State<SendSmsView> {
         padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
         child: SizedBox(
             width: double.infinity,
-            height: 30.0,
+            height: 40.0,
             child: new RaisedButton(
               elevation: 5.0,
-              // shape: new RoundedRectangleBorder(
-              //     borderRadius: new BorderRadius.circular(30.0)),
               color: Colors.grey,
               child: new Text('Αλλαγή Λόγου Μετακίνησης',
                   textAlign: TextAlign.center,
@@ -203,6 +230,16 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createFooter() {
+    return _createCreditsAndCommunication();
+    // if (widget.viewModel.movingCode == null &&
+    //     widget.viewModel.smsStatistics.getTotalSmsOfTheDay() > 0) {
+    //   return _createSentMessagesText();
+    // } else {
+    //   return _createCreditsAndCommunication();
+    // }
+  }
+
+  Widget _createCreditsAndCommunication() {
     var text = new Text(
       'Developed by Dimitris Paxinos',
       style: new TextStyle(color: Colors.grey),
@@ -224,20 +261,22 @@ class SendSmsViewState extends State<SendSmsView> {
     children.add(text);
     children.add(gd);
 
-    var cont = new Container(
-        child: new Column(
-          children: children,
-        ),
-        margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
+    var cont = new SizedBox(
+      child: new Column(
+        children: children,
+      ),
+      height: 40.0,
+    );
 
     return cont;
   }
 
-  Widget _createRatingFooter() {
+  Widget _createRatingControl() {
     var gd = GestureDetector(
         child: Text("Βαθμολογήστε μας",
             style: TextStyle(
                 fontSize: 18,
+                fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none,
                 color: Helper.getStandardThemeColor())),
         onTap: () {
@@ -245,21 +284,19 @@ class SendSmsViewState extends State<SendSmsView> {
               'https://play.google.com/store/apps/details?id=metakinisi.app';
 
           launch(marketurl);
-
-          // var rs = new RatingService();
-          // rs.showDialog2(context);
-          // do what you need to do when "Click here" gets clicked
         });
 
     var cont = new Container(
-        child: new Column(
-          children: <Widget>[gd],
-        ),
-        margin: new EdgeInsets.fromLTRB(0, 20, 0, 0));
+      child: new Column(
+        children: <Widget>[gd],
+      ),
+      padding: EdgeInsets.fromLTRB(5, 30, 5, 0),
+    );
 
-    var totalDailySms = widget.viewModel.smsStatistics.getTotalSmsOfTheDay();
+    var ps = new ProfileService();
+    var totalNumberOfMessage = ps.getTotalMessagesNumber();
 
-    if (totalDailySms > 1 && totalDailySms < 8) {
+    if (totalNumberOfMessage >= 2 && totalNumberOfMessage <= 4) {
       return cont;
     }
 

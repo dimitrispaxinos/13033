@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:metakinisi/shared/categoryStatistics.dart';
 import 'package:metakinisi/shared/smsStatistics.dart';
 import 'package:metakinisi/viewModels/profileViewModel.dart';
@@ -11,7 +10,7 @@ class ProfileService {
   static String profileName = "profileName";
   static String profileStreet = "profileStreet";
   static String profileArea = "profileArea";
-  static String totalNumberOfMessages = "profileArea";
+  static String totalNumberOfMessages = "totalNumberOfMessages";
   static String statisticsKey = "statistics";
 
   ProfileViewModel getProfile() {
