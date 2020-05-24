@@ -1,6 +1,6 @@
 ###  13033 App
 
-I developed this mobile app called 13033 using Google's Flutter (in less than 6 hours) for simplyfying the process of registering your movement (by sending the required SMS to 13033) when leaving your house during the COVID-19 lockdown in Greece. The app had  **more than 6.5K downloads** (as of April 23) and can be found on [**Play Store**](https://play.google.com/store/apps/details?id=metakinisi.app).
+I developed this mobile app called 13033 using Google's Flutter (in less than 6 hours) for simplyfying the process of registering your movement (by sending the required SMS to 13033) when leaving your house during the COVID-19 lockdown in Greece. The app can be found on [**Play Store**](https://play.google.com/store/apps/details?id=metakinisi.app).
 
 The app was also featured in an [article](https://www.thetoc.gr/koinwnia/article/koronoios-13033---i-dorean-efarmogi-pou-stelnei-ta-sms-metakinisis-me-3-klik/) on a greek news site and providing some publicity. Now, after less than a month, it has reached more than 6.5K downloads and helped many people in their daily life. 
 
