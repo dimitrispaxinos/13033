@@ -1,8 +1,8 @@
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 
 class AmplitudeLogProvider {
-  static final AmplitudeFlutter analytics =      
-      AmplitudeFlutter('74ca33e75a51ed07873a75ac4a43179f');
+  // Add key for production
+  static final AmplitudeFlutter analytics = AmplitudeFlutter('');
   static final Identify identify = Identify();
 
   static String _usedStoredAddress = "user_stored_address";
