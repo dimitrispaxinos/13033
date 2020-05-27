@@ -1,4 +1,4 @@
-**Disclaimer: This app was created in order to quickly solve an urgent problem during the COVID-19 Lockdown and not for showcasing coding best practices**
+**Disclaimer: This app was created in order to quickly solve an urgent problem during the COVID-19 Lockdown and not for showcasing coding best practices :)**
 
 
 ###  13033 App
