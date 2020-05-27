@@ -1,3 +1,6 @@
+**Disclaimer: This app was created in order to quickly solve an urgent problem during the COVID-19 Lockdown and not for showcasing coding best practices**
+
+
 ###  13033 App
 
 I developed this mobile app called 13033 using Google's Flutter (in less than 6 hours) for simplyfying the process of registering your movement (by sending the required SMS to 13033) when leaving your house during the COVID-19 lockdown in Greece. The app can be found on [**Play Store**](https://play.google.com/store/apps/details?id=metakinisi.app).
