@@ -43,7 +43,7 @@ class SendSmsViewState extends State<SendSmsView> {
             bottomNavigationBar: BottomAppBar(
                 child: new Container(
                     padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
-                    child: _createFooter())),
+                    child:  _createFooter())),
             key: _scaffoldKey,
             appBar: AppBar(
                 backgroundColor: Helper.getStandardThemeColor(),
@@ -107,8 +107,8 @@ class SendSmsViewState extends State<SendSmsView> {
         ),
         _createButton(1, 'Φαρμακείο / Γιατρός'),
         _createButton(2, 'Σούπερ Μάρκετ'),
-        _createButton(3, 'Τράπεζα'),
-        _createButton(4, 'Παροχή Βοήθειας'),
+        _createButton(3, 'Τράπεζα / Δημόσιες Υπηρεσίες'),
+        _createButton(4, 'Παροχή Βοήθειας / Συνοδεία Μαθητών'),
         _createButton(5, 'Τελετή / Διαζευγμένοι Γονείς'),
         _createButton(6, 'Άσκηση / Βόλτα με κατοικίδιο'),
         _createEditPersonalDetailsButton(),
