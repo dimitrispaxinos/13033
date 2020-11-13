@@ -162,7 +162,7 @@ class SendSmsViewState extends State<SendSmsView> {
       buttonColor = Colors.grey;
     }
 
-    if (movingCode == 6) {
+    if (movingCode == 6 && _goingOutIsNotPermitted()) {
       buttonText = "Βόλτα με Κατοικίδιο";
     }
 
