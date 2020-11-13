@@ -43,7 +43,7 @@ class SendSmsViewState extends State<SendSmsView> {
             bottomNavigationBar: BottomAppBar(
                 child: new Container(
                     padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
-                    child:  _createFooter())),
+                    child: _createFooter())),
             key: _scaffoldKey,
             appBar: AppBar(
                 backgroundColor: Helper.getStandardThemeColor(),
@@ -103,8 +103,9 @@ class SendSmsViewState extends State<SendSmsView> {
     ListView col = new ListView(
       children: <Widget>[
         new Container(
-          padding: EdgeInsets.fromLTRB(0, 12.0, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 10.0, 0, 0),
         ),
+        _createNineToFiveWarning(),
         _createButton(1, 'Φαρμακείο / Γιατρός'),
         _createButton(2, 'Σούπερ Μάρκετ'),
         _createButton(3, 'Τράπεζα / Δημόσιες Υπηρεσίες'),
@@ -118,6 +119,23 @@ class SendSmsViewState extends State<SendSmsView> {
     var form = Form(child: col);
 
     return form;
+  }
+
+  Widget _createNineToFiveWarning() {
+    var widget = new Container(
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
+        child: new Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+            child: new Text(
+              "Από τις 9 το βράδυ μέχρι τις 5 το πρωί επιτρέπονται οι μετακινήσεις αποκλειστικά και μόνο για λόγους εργασίας, εξαιρετικές περιπτώσεις υγείας και μικρή βόλτα κατοικίδιου ζώου σε απόσταση κοντινή από την κατοικία.",
+              style: TextStyle(color: Colors.red),
+            )));
+    var thisInstant = new DateTime.now();
+
+    if (_goingOutIsNotPermitted()) {
+      return widget;
+    }
+    return new Container();
   }
 
   Widget _createSendForm() {
@@ -138,6 +156,16 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createButton(int movingCode, String buttonText) {
+    var buttonColor = Helper.getStandardThemeColor();
+    if ((movingCode != 1 && movingCode != 6) && (_goingOutIsNotPermitted())) {
+      return new Container();
+      buttonColor = Colors.grey;
+    }
+
+    if (movingCode == 6) {
+      buttonText = "Βόλτα με Κατοικίδιο";
+    }
+
     var sb = new Container(
         padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
         child: SizedBox(
@@ -147,7 +175,7 @@ class SendSmsViewState extends State<SendSmsView> {
               elevation: 5.0,
               // shape: new RoundedRectangleBorder(
               //     borderRadius: new BorderRadius.circular(30.0)),
-              color: Helper.getStandardThemeColor(),
+              color: buttonColor,
               child: new Text(buttonText,
                   textAlign: TextAlign.center,
                   style: new TextStyle(fontSize: 17.0, color: Colors.white)),
@@ -259,7 +287,11 @@ class SendSmsViewState extends State<SendSmsView> {
     var children = new List<Widget>();
 
     children.add(text);
-    children.add(gd);
+
+// Show communicate
+    if (widget.viewModel.movingCode != null) {
+      children.add(gd);
+    }
 
     var cont = new SizedBox(
       child: new Column(
@@ -301,5 +333,13 @@ class SendSmsViewState extends State<SendSmsView> {
     }
 
     return new Container();
+  }
+
+  bool _goingOutIsNotPermitted() {
+    var thisInstant = new DateTime.now();
+    if (thisInstant.hour >= 21 || thisInstant.hour < 5) {
+      return true;
+    }
+    return false;
   }
 }
