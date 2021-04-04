@@ -308,13 +308,10 @@ class SendSmsViewState extends State<SendSmsView> {
                 )))));
 
     var children = new List<Widget>();
-
-    children.add(container);
-
-// Show communicate
-    // if (widget.viewModel.movingCode != null) {
-    //   children.add(gd);
-    // }
+    //var datetime = DateTime.now();
+    if (DateTime.now().isAfter(DateTime(2021, 4, 5))) {
+      children.add(container);
+    }
 
     var cont = new SizedBox(
       child: new Column(
