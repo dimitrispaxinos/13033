@@ -42,6 +42,7 @@ class SendSmsViewState extends State<SendSmsView> {
         return Scaffold(
             bottomNavigationBar: BottomAppBar(
                 child: new Container(
+                    height: 55,
                     // padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
                     child: _createFooter())),
             key: _scaffoldKey,
@@ -211,7 +212,7 @@ class SendSmsViewState extends State<SendSmsView> {
         padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 15.0),
         child: SizedBox(
             width: double.infinity,
-            height: 70.0,
+            height: 55.0,
             child: new RaisedButton(
                 elevation: 5.0,
                 color: Colors.orange[800],
@@ -292,23 +293,27 @@ class SendSmsViewState extends State<SendSmsView> {
                     ),
                     children: <TextSpan>[
                       new TextSpan(
-                          text: 'Created by ',
+                          text: 'Η εφαμογή αναπτύχθηκε από την',
                           style: new TextStyle(
-                              fontSize: 15.0,
+                              fontSize: 13.0,
                               color: Colors.white,
+                              //color: Colors.orange[800],
                               fontWeight: FontWeight.w400)),
                       new TextSpan(
-                          text: 'Apptiva Software',
+                          text: '\n       apptiva',
                           style: new TextStyle(
-                              fontSize: 17.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
+                              fontSize: 27.0,
+                              // color: Colors.white,
+                              color: Colors.orange[800],
+                              fontWeight: FontWeight.w300,
+                              fontFamily: 'Quicksand')),
                     ],
                   ),
                 )))));
 
     var children = new List<Widget>();
     //var datetime = DateTime.now();
+
     if (DateTime.now().isAfter(DateTime(2021, 4, 5))) {
       children.add(container);
     }
