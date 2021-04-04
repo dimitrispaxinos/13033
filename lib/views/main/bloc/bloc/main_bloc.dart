@@ -4,7 +4,6 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:metakinisi/shared/amplitudeLogProvider.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:metakinisi/shared/SharedPreferencesProvider.dart';
 import 'package:metakinisi/shared/profileService.dart';
 
 part 'main_event.dart';

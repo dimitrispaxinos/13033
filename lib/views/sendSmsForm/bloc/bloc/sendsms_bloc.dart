@@ -43,20 +43,20 @@ class SendsmsBloc extends Bloc<SendsmsEvent, SendsmsState> {
   Future _goToSmsApp(CreateSmsEvent event) async {
     var profile = profileService.getProfile();
 
-    await profileService.increaseSmsCounter(event.viewModel.movingCode);
-
-    event.viewModel.smsStatistics = profileService.getStatisticsOfTheDay();
-
-    String message = event.viewModel.movingCode.toString() +
-        ' ' +
-        profile.name +
-        ' ' +
-        profile.street +
-        ' ' +
-        profile.area;
+    // Disabled functionality for statistics
+    // Not working for 13032 - Has to be revisited
+    // await profileService.increaseSmsCounter(event.viewModel.movingCode);
+    // event.viewModel.smsStatistics = profileService.getStatisticsOfTheDay();
 
     var recipients = new List<String>();
-    recipients.add('13033');
+    String message = profile.name + ' ' + profile.street + ' ' + profile.area;
+
+    if (event.viewModel.movingCode != 7) {
+      message = event.viewModel.movingCode.toString() + ' ' + message;
+      recipients.add('13033');
+    } else {
+      recipients.add('13032');
+    }
 
     try {
       await sendSMS(message: message, recipients: recipients);
