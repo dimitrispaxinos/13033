@@ -37,8 +37,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sms Μετακίνησης',
       theme: ThemeData(
+        primaryColor: Colors.indigo[900],
+        accentColor: Colors.orange,
         // is not restarted.
         primarySwatch: Colors.blue,
+
+        textTheme: TextTheme(
+          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          bodyText1: TextStyle(
+              fontSize: 17.0, fontFamily: 'Hind', color: Colors.white),
+          bodyText2: TextStyle(
+              fontSize: 18.0, fontFamily: 'Hind', color: Colors.white),
+          //new TextStyle(fontSize: 18.0, color: Colors.white
+        ),
       ),
       home: BlocBuilder<MainEvent, MainState>(
         bloc: BlocProvider.of<MainBloc>(context),

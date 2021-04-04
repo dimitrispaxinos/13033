@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +6,8 @@ class Helper {
   static BuildContext _currentContext;
 
   static Color getStandardThemeColor() {
-    return Color.fromRGBO(25, 94, 230, 1);
+    //return Color.fromRGBO(25, 94, 230, 1);
+    return Colors.indigo[900];
   }
 
   static TextStyle getStandardTextStyle() {
@@ -33,7 +33,6 @@ class Helper {
         // set the font size
         fontSize: fontSize);
   }
-
 
   static TextStyle getIntroTextStyle() {
     return TextStyle(fontSize: 20, color: Colors.white, height: 1.7);

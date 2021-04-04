@@ -42,7 +42,7 @@ class SendSmsViewState extends State<SendSmsView> {
         return Scaffold(
             bottomNavigationBar: BottomAppBar(
                 child: new Container(
-                    padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
+                    // padding: new EdgeInsets.fromLTRB(5, 10, 5, 20),
                     child: _createFooter())),
             key: _scaffoldKey,
             appBar: AppBar(
@@ -70,7 +70,7 @@ class SendSmsViewState extends State<SendSmsView> {
                       }),
                 ],
                 title: Text(widget.viewModel.movingCode == null
-                    ? 'Λόγος μετακίνησης'
+                    ? 'Επιλέξτε μετακίνηση'
                     : '')),
             body: new Container(
                 padding: new EdgeInsets.all(10.0),
@@ -113,7 +113,7 @@ class SendSmsViewState extends State<SendSmsView> {
         _createButton(4, 'Παροχή Βοήθειας / Συνοδεία Μαθητών'),
         _createButton(5, 'Τελετή / Διαζευγμένοι Γονείς'),
         _createButton(6, 'Άσκηση / Βόλτα με κατοικίδιο'),
-        _createButton(7, 'Κατάστημα (13032)'),
+        _createButton(7, '13032 - Λιανεμπόριο'),
         _createEditPersonalDetailsButton(),
       ],
     );
@@ -180,7 +180,8 @@ class SendSmsViewState extends State<SendSmsView> {
               color: buttonColor,
               child: new Text(buttonText,
                   textAlign: TextAlign.center,
-                  style: new TextStyle(fontSize: 17.0, color: Colors.white)),
+                  //style: new TextStyle(fontSize: 17.0, color: Colors.white)
+                  style: Theme.of(context).textTheme.bodyText1),
               onPressed: () => _addCodeToViewModel(movingCode, buttonText),
             )));
     return sb;
@@ -213,7 +214,7 @@ class SendSmsViewState extends State<SendSmsView> {
             height: 70.0,
             child: new RaisedButton(
                 elevation: 5.0,
-                color: Colors.yellow,
+                color: Colors.orange[800],
                 child: new Text('Αλλαγή Προσωπικών Στοιχείων',
                     textAlign: TextAlign.center,
                     style: new TextStyle(
@@ -270,30 +271,50 @@ class SendSmsViewState extends State<SendSmsView> {
   }
 
   Widget _createCreditsAndCommunication() {
-    var text = new Text(
-      'Developed by Dimitris Paxinos',
-      style: new TextStyle(color: Colors.grey),
-      textAlign: TextAlign.center,
-    );
+    var container = Expanded(
+        child: GestureDetector(
+            onTap: () {
+              var marketurl = 'https://www.apptivasoftware.com';
 
-    var gd = GestureDetector(
-        child: Text("Επικοινωνία",
-            textAlign: TextAlign.center,
-            style:
-                TextStyle(fontSize: 18, color: Helper.getStandardThemeColor())),
-        onTap: () {
-          _bloc.dispatch(new OpenEmailEvent(widget.viewModel));
+              launch(marketurl);
+            },
+            child: Container(
+                width: double.infinity,
+                color: Helper.getStandardThemeColor(),
+                child: Center(
+                    child: RichText(
+                  text: new TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                    style: new TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
+                    children: <TextSpan>[
+                      new TextSpan(
+                          text: 'Created by ',
+                          style: new TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400)),
+                      new TextSpan(
+                          text: 'Apptiva Software',
+                          style: new TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal)),
+                    ],
+                  ),
+                )))));
 
-          // do what you need to do when "Click here" gets clicked
-        });
     var children = new List<Widget>();
 
-    children.add(text);
+    children.add(container);
 
 // Show communicate
-    if (widget.viewModel.movingCode != null) {
-      children.add(gd);
-    }
+    // if (widget.viewModel.movingCode != null) {
+    //   children.add(gd);
+    // }
 
     var cont = new SizedBox(
       child: new Column(

@@ -64,7 +64,10 @@ class ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Προσωπικά Στοιχεία'), backgroundColor: Helper.getStandardThemeColor(),),
+      appBar: AppBar(
+        title: Text('Προσωπικά Στοιχεία'),
+        backgroundColor: Helper.getStandardThemeColor(),
+      ),
       body: new Container(
         child: BlocBuilder<EditProfileEvent, EditProfileState>(
           bloc: _bloc,
@@ -93,10 +96,12 @@ class ProfileViewState extends State<ProfileView> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            new Container(padding: EdgeInsets.fromLTRB(15,5,15,5),child: 
-            new Text(
-              "Συμπλήρωσε τα στοιχεία σου για το SMS προς το 13033. Τα στοιχεία σου αποθηκεύονται τοπικά για μελλοντικές αποστολές.",
-            )),
+            new Container(
+                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                child: new Text(
+                  "Συμπλήρωσε τα στοιχεία σου για το SMS προς το 13033. Τα στοιχεία σου αποθηκεύονται τοπικά για μελλοντικές αποστολές.",
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                )),
             _createTextFormField(
                 'name',
                 'Ονοματεπώνυμο',
@@ -108,7 +113,6 @@ class ProfileViewState extends State<ProfileView> {
                 _streetFocus,
                 null,
                 _one),
-
             _createTextFormField(
                 'street',
                 'Οδός & Αριθμός',
@@ -181,8 +185,9 @@ class ProfileViewState extends State<ProfileView> {
     }
 
     // String labelText = _translate('editAlert.textFields.$fieldName.labelText');
-    String hintText = null; 
-    String validationMessage = 'Το πεδίο \'' + labelText +'\' είναι υποχρεωτικό';
+    String hintText = null;
+    String validationMessage =
+        'Το πεδίο \'' + labelText + '\' είναι υποχρεωτικό';
 
     var formField = new Padding(
         padding: EdgeInsets.fromLTRB(15.0, 7.0, 15.0, 2.0),
