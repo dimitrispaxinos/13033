@@ -113,7 +113,7 @@ class SendSmsViewState extends State<SendSmsView> {
         _createButton(3, 'Τράπεζα / Δημόσιες Υπηρεσίες'),
         _createButton(4, 'Παροχή Βοήθειας / Συνοδεία Μαθητών'),
         _createButton(5, 'Τελετή / Διαζευγμένοι Γονείς'),
-        _createButton(6, 'Άσκηση / Βόλτα με κατοικίδιο'),
+        _createButton(6, 'Άσκηση / Κατοικίδιο / Εστίαση'),
         _createButton(7, '13032 - Λιανεμπόριο'),
         _createEditPersonalDetailsButton(),
       ],
@@ -130,7 +130,7 @@ class SendSmsViewState extends State<SendSmsView> {
         child: new Container(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
             child: new Text(
-              "Από τις 9 το βράδυ μέχρι τις 5 το πρωί επιτρέπονται οι μετακινήσεις αποκλειστικά και μόνο για λόγους εργασίας, εξαιρετικές περιπτώσεις υγείας και μικρή βόλτα κατοικίδιου ζώου σε απόσταση κοντινή από την κατοικία.",
+              "Από τις 11 το βράδυ μέχρι τις 5 το πρωί επιτρέπονται οι μετακινήσεις αποκλειστικά και μόνο για λόγους εργασίας, εξαιρετικές περιπτώσεις υγείας και μικρή βόλτα κατοικίδιου ζώου σε απόσταση κοντινή από την κατοικία.",
               style: TextStyle(color: Colors.red),
             )));
     var thisInstant = new DateTime.now();
@@ -263,12 +263,6 @@ class SendSmsViewState extends State<SendSmsView> {
 
   Widget _createFooter() {
     return _createCreditsAndCommunication();
-    // if (widget.viewModel.movingCode == null &&
-    //     widget.viewModel.smsStatistics.getTotalSmsOfTheDay() > 0) {
-    //   return _createSentMessagesText();
-    // } else {
-    //   return _createCreditsAndCommunication();
-    // }
   }
 
   Widget _createCreditsAndCommunication() {
@@ -293,14 +287,14 @@ class SendSmsViewState extends State<SendSmsView> {
                     ),
                     children: <TextSpan>[
                       new TextSpan(
-                          text: 'Η εφαμογή αναπτύχθηκε από την',
+                          text: 'Η εφαμογή αναπτύχθηκε από την εταιρεία',
                           style: new TextStyle(
                               fontSize: 13.0,
                               color: Colors.white,
                               //color: Colors.orange[800],
                               fontWeight: FontWeight.w400)),
                       new TextSpan(
-                          text: '\n       apptiva',
+                          text: '\n           apptiva',
                           style: new TextStyle(
                               fontSize: 27.0,
                               // color: Colors.white,
@@ -362,7 +356,7 @@ class SendSmsViewState extends State<SendSmsView> {
 
   bool _goingOutIsNotPermitted() {
     var thisInstant = new DateTime.now();
-    if (thisInstant.hour >= 21 || thisInstant.hour < 5) {
+    if (thisInstant.hour >= 23 || thisInstant.hour < 5) {
       return true;
     }
     return false;

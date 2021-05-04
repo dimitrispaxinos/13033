@@ -48,7 +48,3 @@ class Helper {
         letterSpacing: 0.9);
   }
 }
-
-// String _translate(String key, BuildContext context) {
-//   return AppLocalizations.of(context).tr(key);
-// }
